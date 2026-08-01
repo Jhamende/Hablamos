@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import be.hablamos.app.ui.theme.HablamosTheme
-import be.hablamos.app.ui.v6.HablamosV6App
+import be.hablamos.app.v6.HablamosV6App
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
