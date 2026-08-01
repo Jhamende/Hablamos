@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.hablamos.app.data.ProfileStore
 import be.hablamos.app.personalization.*
-import be.hablamos.app.ui.HablamosApp
 import be.hablamos.app.ui.v4.SpeechBubble
 import java.time.LocalDate
 
@@ -25,16 +24,12 @@ import java.time.LocalDate
 fun HablamosV6App() {
     val context = LocalContext.current
     val profile = remember { ProfileStore(context).load() }
-    if (!profile.onboardingComplete) {
-        HablamosApp()
-        return
-    }
 
     val snapshot = remember(profile) {
         LearnerSnapshot(
-            level = profile.level,
-            goal = profile.goal,
-            dailyMinutes = profile.dailyMinutes,
+            level = profile.level.ifBlank { "A1" },
+            goal = profile.goal.ifBlank { "Parler espagnol avec confiance" },
+            dailyMinutes = profile.dailyMinutes.coerceAtLeast(10),
             skills = listOf(
                 SkillState("Vocabulaire", 64, .68f, 8, 0),
                 SkillState("Compréhension", 58, .61f, 11, 0),
@@ -74,6 +69,20 @@ fun HablamosV6App() {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             AssistChip(onClick = {}, label = { Text("Niveau ${snapshot.level}") })
                             AssistChip(onClick = {}, label = { Text("${snapshot.dailyMinutes} min/jour") })
+                        }
+                    }
+                }
+            }
+
+            if (!profile.onboardingComplete) {
+                item {
+                    Card(
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                    ) {
+                        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text("Personnalise ton professeur", fontSize = 20.sp, fontWeight = FontWeight.Black)
+                            Text("Complète bientôt le test de niveau pour que Mia adapte précisément les séances. En attendant, tu peux déjà découvrir toute la nouvelle interface V6.")
                         }
                     }
                 }
