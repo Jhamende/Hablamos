@@ -3,6 +3,8 @@ name: Build Android APK
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ agent/v6-personal-tutor ]
   workflow_dispatch:
 
 permissions:
